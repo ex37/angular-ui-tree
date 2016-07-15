@@ -776,6 +776,7 @@
                 dragging: dragElm
               };
 
+              dragStarted = true;
               bindDragMoveEvents();
               // Fire dragStart callback
               scope.$apply(function () {
@@ -1064,6 +1065,7 @@
             dragEnd = function (e) {
               var dragEventArgs = dragInfo.eventArgs(elements, pos);
               e.preventDefault();
+              dragStarted = false;
               unbindDragMoveEvents();
 
               $timeout.cancel(scope.expandTimeout);
@@ -1182,7 +1184,7 @@
             };
 
             keydownHandler = function (e) {
-              if (e.keyCode == 27) {
+              if (e.keyCode == 27 && dragStarted === true) {
                 scope.$$allowNodeDrop = false;
                 dragEnd(e);
               }
